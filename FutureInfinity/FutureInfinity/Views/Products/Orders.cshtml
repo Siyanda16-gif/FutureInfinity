@@ -1,0 +1,158 @@
+﻿@model IEnumerable<GROUP_Q.Models.Order>
+
+@{
+    ViewBag.Title = "Orders";
+    GROUP_Q.Models.ApplicationDbContext db = new GROUP_Q.Models.ApplicationDbContext();
+}
+@if (TempData["OrderPlaced"] != null)
+{
+    <script type="text/javascript">
+        // Check for TempData and clear the alert if it's present
+        function clearAlertIfTempDataExists() {
+            // Replace 'yourKey' with the actual TempData key you are using
+            var tempData = '@TempData["OrderPlaced"]';
+            if (tempData) {
+                // Clear the alert
+                alert(tempData);
+            }
+        }
+
+        // Attach the clearAlertIfTempDataExists function to run when the document is ready
+        document.addEventListener("DOMContentLoaded", clearAlertIfTempDataExists);
+    </script>
+}
+
+<h2>Hire Orders</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Order Num
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th>
+            Hire Days
+        </th>
+        <th>Final Total</th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </th>
+        <th>
+            Form Date
+        </th>
+        <th>
+            To Date
+        </th>
+        <th>
+            Delivery Address
+        </th>
+        <th>
+            Status
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                #@item.OrderId
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @item.HireDays
+            </td>
+            <td>
+                @item.FinalTotal
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @item.FromDate
+            </td>
+            <td>
+                @item.ToDate
+            </td>
+            <td>
+                @item.DeliveryAddress
+            </td>
+            <td>
+                @item.Status
+            </td>
+            <td>
+                @if (item.Status == "Delivered To Customer")
+                {
+                    <a href="#" class="btn btn-warning request-return-btn"
+                       data-orderid="@item.OrderId"
+                       data-to-date="@item.ToDate">Request Return</a>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".request-return-btn").click(function (e) {
+                e.preventDefault();
+
+                var orderId = $(this).data("orderid");
+                var toDate = $(this).data("to-date");
+
+                var formattedDate = new Date(toDate);
+                var options = { year: 'numeric', month: 'long', day: 'numeric' };
+                var formattedDateString = formattedDate.toLocaleDateString('en-GB', options);
+
+                formattedDateString += ' at 5:00 PM';
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You want to request return for this order? Please note that the return request will be sent. The driver will arrive no later than ' + formattedDateString,
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, request return!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/Drivers/RequestReturn',
+                            type: 'POST',
+                            data: { orderId: orderId },
+                            success: function (data) {
+                                console.log(data);
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Return Request Sent',
+                                    text: 'The return request has been sent successfully.',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload(); 
+                                    }
+                                });
+                            },
+                            error: function (error) {
+                                console.log(error);
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Failed to send the return request. Please try again later.',
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
+

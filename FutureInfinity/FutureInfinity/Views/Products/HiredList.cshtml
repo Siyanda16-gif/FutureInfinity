@@ -1,0 +1,110 @@
+﻿@model IEnumerable<GROUP_Q.Models.Order>
+
+@{
+    ViewBag.Title = "Orders";
+    GROUP_Q.Models.ApplicationDbContext db = new GROUP_Q.Models.ApplicationDbContext();
+}
+@if (TempData["OrderPlaced"] != null)
+{
+    <script type="text/javascript">
+        // Check for TempData and clear the alert if it's present
+        function clearAlertIfTempDataExists() {
+            // Replace 'yourKey' with the actual TempData key you are using
+            var tempData = '@TempData["OrderPlaced"]';
+            if (tempData) {
+                // Clear the alert
+                alert(tempData);
+            }
+        }
+
+        // Attach the clearAlertIfTempDataExists function to run when the document is ready
+        document.addEventListener("DOMContentLoaded", clearAlertIfTempDataExists);
+    </script>
+}
+
+<h2>Hire Orders</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Order Num
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th>
+            Hire Days
+        </th>
+        <th>Final Total</th>
+        <th>
+            Customer
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </th>
+        <th>
+            Form Date
+        </th>
+        <th>
+            To Date
+        </th>
+        <th>
+            Delivery Address
+        </th>
+        <th>
+            Status
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                #@item.OrderId
+            </td>
+            <td>
+                R @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @item.HireDays
+            </td>
+            <td>
+                R @item.FinalTotal
+            </td>
+            @{
+                var CustName = db.Users.Where(x => x.Id == item.UserId).Select(x => x.FirstName + " " + x.LastName).FirstOrDefault();
+            }
+            <td>
+                @CustName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @item.FromDate
+            </td>
+            <td>
+                @item.ToDate
+            </td>
+            <td>
+                @item.DeliveryAddress
+            </td>
+            <td>
+                @item.Status
+            </td>
+            <td>
+                
+                @if (item.Status == "Payment Recieved")
+                {
+                    <a href="/Drivers/DesignateDriver?orderid=@item.OrderId" class="btn btn-success">Designate Driver</a>
+                }
+                @if (item.Status == "Awaiting Admin Confirmation")
+                {
+                    <a href="/Drivers/ConfirmReturn?orderid=@item.OrderId" class="btn btn-success">Confirm Package Return</a>
+                }
+            </td>
+        </tr>
+    }
+
+</table>

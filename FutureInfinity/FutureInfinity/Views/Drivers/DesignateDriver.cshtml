@@ -1,0 +1,56 @@
+﻿﻿@model GROUP_Q.Models.Manifesto
+
+<br />
+<br />
+<br />
+<div class="container d-flex justify-content-center align-items-center h-100">
+    <div class="card p-4">
+        <h2 class="card-title text-center">Designate Driver</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DestinationAddress, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.DestinationAddress, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.DestinationAddress, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DeliveryDate, "Delivery Date", htmlAttributes: new { @class = "control-label" })
+                <input type="datetime-local" id="DeliveryDate" class="form-control" name="DeliveryDate" required />
+                @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DriverId, "DriverId", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("DriverId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DriverId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DeliveryVanId, "DeliveryVanId", htmlAttributes: new { @class = "control-label" })
+                @{
+                    var vehicleList = ViewBag.DeliveryVanId as SelectList;
+                    if (vehicleList != null && vehicleList.Any())
+                    {
+                        @Html.DropDownList("DeliveryVanId", vehicleList, htmlAttributes: new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        <p>No delivery vans available</p>
+                    }
+                }
+                @Html.ValidationMessageFor(model => model.DeliveryVanId, "", new { @class = "text-danger" })
+            </div>
+
+            <br />
+            <div class="text-center">
+                <input type="submit" value="Designate driver" class="btn btn-success" />
+            </div>
+        }
+    </div>
+</div>
+<br />
+<br />

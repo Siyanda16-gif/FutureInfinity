@@ -1,0 +1,56 @@
+﻿@model GROUP_Q.Models.DeliveryVan
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 style="font-family: Arial, sans-serif; color: red;">Delete</h2>
+
+<h3 style="font-family: Arial, sans-serif; color: black;">Are you sure you want to delete this?</h3>
+<div>
+    <h4 style="font-family: Arial, sans-serif; color: black;">DeliveryVan</h4>
+    <hr style="border-color: black;" />
+    <dl class="dl-horizontal">
+        <dt style="font-family: Arial, sans-serif; color: black;">
+            @Html.DisplayNameFor(model => model.NumberPlate)
+        </dt>
+
+        <dd style="font-family: Arial, sans-serif; color: black;">
+            @Html.DisplayFor(model => model.NumberPlate)
+        </dd>
+
+        <dt style="font-family: Arial, sans-serif; color: black;">
+            @Html.DisplayNameFor(model => model.IsAvailable)
+        </dt>
+
+        <dd style="font-family: Arial, sans-serif; color: black;">
+            @Html.DisplayFor(model => model.IsAvailable)
+        </dd>
+
+        <dt style="font-family: Arial, sans-serif; color: black;">
+            @Html.DisplayNameFor(model => model.DriverSignature)
+        </dt>
+
+        <dd style="font-family: Arial, sans-serif; color: black;">
+            @Html.DisplayFor(model => model.DriverSignature)
+        </dd>
+
+        <dt style="font-family: Arial, sans-serif; color: black;">
+            @Html.DisplayNameFor(model => model.StatusNum)
+        </dt>
+
+        <dd style="font-family: Arial, sans-serif; color: black;">
+            @Html.DisplayFor(model => model.StatusNum)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" style="font-family: Arial, sans-serif; color: white; background-color: black;" /> |
+            @Html.ActionLink("Back to List", "Index", null, new { style = "font-family: Arial, sans-serif; color: red;" })
+        </div>
+    }
+</div>

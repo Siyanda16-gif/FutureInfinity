@@ -1,0 +1,38 @@
+﻿@model GROUP_Q.Models.ExternalLoginConfirmationViewModel
+@{
+    ViewBag.Title = "Register";
+}
+<main aria-labelledby="title">
+    <h2 id="title" style="font-family: Arial, sans-serif; color: red;">@ViewBag.Title.</h2>
+    <h3 style="font-family: Arial, sans-serif; color: black;">Associate your @ViewBag.LoginProvider account.</h3>
+
+    @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <h4 style="font-family: Arial, sans-serif; color: black;">Association Form</h4>
+        <hr style="border-color: black;" />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <p class="text-info" style="font-family: Arial, sans-serif; color: black;">
+            You've successfully authenticated with <strong>@ViewBag.LoginProvider</strong>.
+            Please enter a user name for this site below and click the Register button to finish
+            logging in.
+        </p>
+        <div class="row">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label", style = "font-family: Arial, sans-serif; color: black;" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", style = "font-family: Arial, sans-serif; color: black;" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-md-2 col-md-10">
+                <input type="submit" class="btn btn-outline-dark" value="Register" style="font-family: Arial, sans-serif; color: white; background-color: black;" />
+            </div>
+        </div>
+    }
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

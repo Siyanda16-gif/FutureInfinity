@@ -1,0 +1,98 @@
+﻿@model IEnumerable<GROUP_Q.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+@if (User.IsInRole("Admin"))
+{
+    <h2>Product List</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductPicture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductPrice)
+                </td>
+                <td>
+                    <img style="width:100px;height:100px;" src="data:image/png;base64,@item.ProductPicture" alt="ProductPicture" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <!-- gallery section start -->
+    <div class="gallery_section layout_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="gallery_taital text-center">Our best offers</h1>
+                </div>
+            </div>
+            <div class="gallery_section_2">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4">
+                            <form action="/Products/AddToCart" method="post">
+                                <input type="hidden" name="ProductId" value="@item.Id" />
+                                <input type="hidden" name="Name" value="@item.ProductName" />
+                                <input type="hidden" name="Picture" value="@item.ProductPicture" />
+                                <input type="hidden" name="Price" value="@item.ProductPrice" />
+                                <input type="hidden" name="Description" value="@item.Description" />
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="gallery_box">
+                                            <div class=""><img class="card-img-top" src="data:image/png;base64,@item.ProductPicture"></div>
+                                            <h3 class="types_text">@item.ProductName</h3>
+                                            <h3 class="types_text">@item.Description</h3>
+                                            <p class="looking_text">Price Per Service @item.ProductPrice</p>
+                                            <p class="looking_text">Quantity available: @item.Quantity</p>
+                                            <label for="Qty">Select Service Qty: </label>
+                                            <input type="number" class="form-control" name="Qty" placeholder="1" min="1" max="@item.Quantity" required />
+                                            <br />
+                                            <div class="read_bt"><button type="submit" class="btn btn-outline-dark col-12">Book Service</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    }
+                    </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- gallery section end -->
+}

@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Confirm Email";
+}
+<style>
+    body {
+        background-image: url('.jpg');
+        background-image: url('../../content/templete/img/4fa9d9ac549ad9abf3ef75cc0dcbd848.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    .login-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+    }
+</style>
+<main aria-labelledby="title">
+    <h2 id="title">@ViewBag.Title</h2>
+    <div>
+        <p>
+            Thank you for confirming your email. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+        </p>
+    </div>
+</main>

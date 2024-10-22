@@ -1,0 +1,43 @@
+﻿@model GROUP_Q.Models.DeliveryVan
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2 style="font-family: Arial, sans-serif; color: red;">Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4 style="font-family: Arial, sans-serif; color: black;">Tow Truck</h4>
+        <hr style="border-color: black;" />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.NumberPlate, htmlAttributes: new { @class = "control-label col-md-2", style = "font-family: Arial, sans-serif; color: black;" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NumberPlate, new { htmlAttributes = new { @class = "form-control", style = "font-family: Arial, sans-serif; color: black;" } })
+                @Html.ValidationMessageFor(model => model.NumberPlate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsAvailable, htmlAttributes: new { @class = "control-label col-md-2", style = "font-family: Arial, sans-serif; color: black;" })
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.IsAvailable, new { htmlAttributes = new { @class = "form-control", style = "font-family: Arial, sans-serif; color: black;" } })
+                @Html.ValidationMessageFor(model => model.IsAvailable, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" style="font-family: Arial, sans-serif; color: white; background-color: black;" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", null, new { style = "font-family: Arial, sans-serif; color: red;" })
+</div>

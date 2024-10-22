@@ -1,0 +1,84 @@
+﻿﻿@model IEnumerable<GROUP_Q.Models.Manifesto>
+
+@{
+    ViewBag.Title = "Index";
+    GROUP_Q.Models.ApplicationDbContext db = new GROUP_Q.Models.ApplicationDbContext();
+}
+<div class="container p-5">
+    <br />
+    <br />
+
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DestinationAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryDate)
+            </th>
+            <th>
+                Delivery Van
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DestinationAddress)
+                </td>
+                <td>
+                    @if (item.Status == "Delivery Complete")
+                    {
+                        @Html.DisplayFor(modelItem => item.Status)
+
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Status)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryDate)
+                </td>
+                <td>
+                    @item.NumberPlate
+                </td>
+                <td>
+                    
+                    @if (item.Status == "Order Appointed To Driver" || item.Status == "Package Has Been Dispatched" || item.Status == "Return Requested" || item.Status == "Package collected from customer")
+                    {
+                        <a href="/Drivers/ViewDetails?id=@item.OrderId" class="btn btn-info">View Details</a>
+                    }
+                    @if (item.Status == "Waiting For Driver To Sign")
+                    {
+                        <a href="/Delivery/DriverSignOff?deliveryInfoId=@item.OrderId" class="btn btn-info">Confirm Package</a>
+                    }
+                    @if (item.Status != "Package Has Been Dispatched" && item.Status != "Waiting For Driver To Sign" && item.Status != "Order Allocated To Driver")
+                    {
+                        <ion-icon name="checkmark-circle-sharp" class="text-success"></ion-icon>
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

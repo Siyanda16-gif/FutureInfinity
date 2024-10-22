@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<!-- Hero Start -->
+<div class="container-fluid bg-light py-6 my-6 mt-0">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-7 col-md-12">
+                <h1 class="display-1 mb-4 animated bounceInDown">Elite Clans at your <span style="color: black;">Service</span>...</h1>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="/Services/Create" class="border-0 rounded-pill py-3 px-4 px-md-5 me-4 animated bounceInLeft" style="background-color: #000000; color: #ffffff;">Book Now</a>
+                }
+                else
+                {
+                    <p class="text-danger">Please <a href="/Account/Login">log in</a> to book a service.</p>
+                }
+
+                <a href="/Home/About" class="border-0 rounded-pill py-3 px-4 px-md-5 animated bounceInLeft" style="background-color: #000000; color: #ffffff;">Know More</a>
+            </div>
+            <div class="col-lg-5 col-md-12">
+                <img src="~/Content/Templete/img/WhatsApp Image 2024-08-28 at 20.59.04_59632bee.jpg" style="width: 100%; height: auto; object-fit: cover;" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero End -->

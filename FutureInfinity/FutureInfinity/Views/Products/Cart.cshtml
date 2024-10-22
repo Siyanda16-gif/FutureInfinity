@@ -1,0 +1,202 @@
+﻿@model IEnumerable<GROUP_Q.Models.Cart>
+@{
+    ViewBag.Title = "Cart";
+    //Layout = "~/Views/Shared/Admin_Layout.cshtml";
+    GROUP_Q.Models.ApplicationDbContext db = new GROUP_Q.Models.ApplicationDbContext();
+    var Cart = Session["Cart"] as List<GROUP_Q.Models.Cart> ?? new List<GROUP_Q.Models.Cart>();
+    double SubTotal = 0, Total = 0;
+}
+<br />
+<h2 class="text-center">Cart</h2>
+<br />
+@if (Cart.Count() != 0)
+{
+    <section>
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    @foreach (var item in Cart)
+                    {
+
+                        SubTotal = (item.Price * item.Quantity);
+                        Total += SubTotal;
+                        <div class="card mb-4">
+                            <div class="card-body p-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <img src="data:image/Jpeg;base64,@item.ProductPic"
+                                             class="img-fluid" alt="Generic placeholder image">
+                                    </div>
+                                    <div class="col-md-2 d-flex justify-content-center">
+                                        <div>
+                                            <p class="small text-muted mb-4 pb-2">Name</p>
+                                            <p class="lead fw-normal mb-0">@item.ProductName</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 d-flex justify-content-center">
+                                        <div>
+                                            <p class="small text-muted mb-4 pb-2">Quantity</p>
+                                            <form method="post" action="/Products/AddQty" id="AddQty">
+                                                <input type="hidden" name="ProductId" value="@item.ProductId" />
+                                                <p class="lead fw-normal mb-0">
+                                                    <input onchange="document.getElementById('AddQty').submit()" type="number" class="form-control" min="1" name="Quantity" value="@item.Quantity" />
+                                                </p>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex justify-content-center">
+                                        <div>
+                                            <p class="small text-muted mb-4 pb-2">Price</p>
+                                            <p class="lead fw-normal mb-0">@item.Price.ToString("R0.00")</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex justify-content-center">
+                                        <div>
+                                            <p class="small text-muted mb-4 pb-2">Sub Total</p>
+                                            <p class="lead fw-normal mb-0">@SubTotal.ToString("R0.00")</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex justify-content-center">
+                                        <div>
+                                            <p class="small text-white mb-4 pb-2">.</p>
+                                            <form id="myForm" method="post" action="/Products/RemoveItemFromCart">
+                                                <input type="hidden" name="ProductId" value="@item.ProductId" />
+                                                <a href="#" onclick="submitForm()" class="decoration-none">
+                                                    <img style="width:30%" src="https://cdn-icons-png.flaticon.com/512/8866/8866249.png" />
+                                                </a>
+                                            </form>
+
+                                            <script>
+                                                function submitForm() {
+                                                    var form = document.getElementById("myForm");
+                                                    form.submit();
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                <form id="stripe-form" action="/Products/PlaceOrder" method="post" onsubmit="return validateForm()">
+                    <div class="card mb-5">
+                        <div class="card-body p-4 text-center">
+                            <div class="">
+                                <p class="mb-0 me-5 d-flex align-items-center">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="FromDate">From Date:</label>
+                                            <input type="datetime-local" name="FromDate" id="FromDate" class="form-control" required />
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="ToDate">To Date:</label>
+                                            <input type="datetime-local" name="ToDate" id="ToDate" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <label for="DeliveryAddress">Delivery Address:</label>
+                                        <input type="text" name="DeliveryAddress" class="form-control" required />
+                                    </div>
+
+                                    <div class="row">
+                                        <label for="ContactNo">Contact Number:</label>
+                                        <input type="text" name="ContactNo" class="form-control" required />
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="Total">Order total:</label>
+                                            <input type="text" id="Total" name="Total" class="form-control" value="@Total" disabled />
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="DaysDifference">Days Difference:</label>
+                                            <input type="number" id="DaysDifference" name="HireDays" class="form-control" disabled />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label for="FinalTotal">Final Total:</label>
+                                            <input type="text" id="FinalTotal" name="FinalTotal" class="form-control" disabled />
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        // Add an event listener to the "From Date" and "To Date" inputs to calculate the difference in days
+                                        document.getElementById('FromDate').addEventListener('input', updateDaysDifference);
+                                        document.getElementById('ToDate').addEventListener('input', updateDaysDifference);
+
+                                        function updateDaysDifference() {
+                                            const fromDate = new Date(document.getElementById('FromDate').value);
+                                            const toDate = new Date(document.getElementById('ToDate').value);
+
+                                            const timeDifference = toDate - fromDate;
+                                            const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+                                            console.log('Days Difference:', daysDifference);
+
+                                            document.getElementById('DaysDifference').value = daysDifference.toFixed(2);
+
+                                            const total = parseFloat(document.getElementById('Total').value);
+                                            const finalTotal = total * daysDifference;
+
+                                            console.log('Final Total:', finalTotal);
+
+                                            document.getElementById('FinalTotal').value = finalTotal.toFixed(2);
+                                        }
+
+
+                                        // Add an event listener to the "From Date" and "To Date" inputs to ensure "To Date" is at least 2 days ahead
+                                        document.getElementById('FromDate').addEventListener('input', validateToDate);
+
+                                        function validateForm() {
+                                            const fromDate = new Date(document.getElementById('FromDate').value);
+                                            const toDateInput = document.getElementById('ToDate');
+                                            const toDate = new Date(toDateInput.value);
+
+                                            const twoDaysAhead = new Date(fromDate);
+                                            twoDaysAhead.setDate(fromDate.getDate());
+
+                                            if (fromDate == twoDaysAhead) {
+                                                alert("To Date should be at least 1 hour of now.");
+                                                toDateInput.value = "";
+                                                return false;
+                                            }
+
+                                            return true;
+                                        }
+                                    </script>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-5">
+                        <div class="card-body p-4 text-center">
+                            <div class="">
+                                <div class="row mb-3">
+                                    <div class="col-2"></div>
+                                    <div class="col-4">
+                                        <a href="/Products/Index" class="btn btn-outline-primary col-12">Continue Shopping</a>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="submit" class="btn btn-outline-success col-12">Place Order</button>
+                                    </div>
+                                    <div class="col-2"></div>
+                                </div>                           
+                            </div>
+                        </div>
+                    </div>    
+                </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+else
+{
+    <h2 class="text-danger text-center">No Items Added</h2>
+}

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<GROUP_Q.Models.Service>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Thank You for Booking a Service</h2>
+
+<p>
+    @Html.ActionLink("Make Booking", "Create")
+</p>
+
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceInfo.service_Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Veh_Make)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Model)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Year)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vin)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceInfo.service_Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Veh_Make)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vin)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Service_Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Service_Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Service_Id })
+            </td>
+        </tr>
+    }
+</table>

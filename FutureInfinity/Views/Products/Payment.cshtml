@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Payment";
+}
+<div class="text-center">
+    <h2>Make Payment</h2>
+    <img src="~/Content/Templete/img/pay.jpg" />
+    <form id="stripe-form" action="/Products/Orders" method="get">
+        <script id="stripe-button" src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_51MxYufJpFrhdhKyru2VgDOg9kgX5ZBzWDLxuIfH4AqvpJH29SOdVltfV4QqgAYVDxxNSXo65qyyeBapp7j0AxXjB00wC1VMehB"
+                data-amount=""
+                data-name=" Elite Clans"
+                data-description="Payment "
+                data-image=""
+                data-locale="auto"
+                data-currency="zar"
+                data-label="Pay Now">
+
+        </script>
+    </form>
+</div>

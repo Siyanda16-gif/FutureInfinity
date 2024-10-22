@@ -1,0 +1,26 @@
+﻿@model GROUP_Q.Models.ServiceInfo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ServiceInfo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.service_Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.service_Type)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.si_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

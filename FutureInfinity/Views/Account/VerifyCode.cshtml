@@ -1,0 +1,41 @@
+﻿@model GROUP_Q.Models.VerifyCodeViewModel
+@{
+    ViewBag.Title = "Verify";
+}
+
+<main aria-labelledby="title">
+    <h2 id="title" style="font-family: Arial, sans-serif; color: red;">@ViewBag.Title.</h2>
+
+    @using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("provider", @Model.Provider)
+        @Html.Hidden("rememberMe", @Model.RememberMe)
+        <h4 style="font-family: Arial, sans-serif; color: black;">Enter verification code</h4>
+        <hr style="border-color: black;" />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="row">
+            @Html.LabelFor(m => m.Code, new { @class = "col-md-2 col-form-label", style = "font-family: Arial, sans-serif; color: black;" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control", style = "font-family: Arial, sans-serif; color: black;" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-md-2 col-md-10">
+                <div class="checkbox" style="font-family: Arial, sans-serif; color: black;">
+                    @Html.CheckBoxFor(m => m.RememberBrowser)
+                    @Html.LabelFor(m => m.RememberBrowser)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-md-2 col-md-10">
+                <input type="submit" class="btn btn-outline-dark" value="Submit" style="font-family: Arial, sans-serif; color: white; background-color: black;" />
+            </div>
+        </div>
+    }
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

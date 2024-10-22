@@ -1,0 +1,41 @@
+// Order model
+public class Order
+{
+    public int Id { get; set; }
+    public string OrderNumber { get; set; }
+    public string Status { get; set; }
+    // Other properties...
+}
+
+// Order controller
+public class OrderController : Controller
+{
+    private readonly ApplicationDbContext _context;
+
+    public OrderController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    // Action to display order tracking form
+    public IActionResult TrackOrder()
+    {
+        return View();
+    }
+
+    // Action to handle order tracking form submission
+    [HttpPost]
+    public IActionResult TrackOrder(string orderNumber)
+    {
+        var order = _context.Orders.FirstOrDefault(o => o.OrderNumber == orderNumber);
+        if (order != null)
+        {
+            return View("OrderDetails", order);
+        }
+        else
+        {
+            ViewBag.ErrorMessage = "Order not found";
+            return View();
+        }
+    }
+}

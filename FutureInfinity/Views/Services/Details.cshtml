@@ -1,0 +1,58 @@
+﻿@model GROUP_Q.Models.Service
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Service</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceInfo.service_Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceInfo.service_Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Veh_Make)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Veh_Make)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vin)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Service_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
